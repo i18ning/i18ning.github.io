@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "start": "browser-sync start --server ./ --files 'example' --startPath /example/index.html"
+  },
+  "devDependencies": {
+    "browser-sync": "^2.26.3"
+  }
+}
