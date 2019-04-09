@@ -6,6 +6,7 @@ const langs = [
 const $t = {
   title: { "en": "English", "zh-CN": "中文" },
   parsed: { "en": "Parsed", "zh-CN": "解析后" },
+  save: { "en": "Save", "zh-CN": "保存" },
 }
 
 class Panel extends React.Component {
@@ -23,9 +24,9 @@ class Panel extends React.Component {
         value={ panel.text }
       />
       <div className="buttonWrapper">
-        <button onClick={ () => onSave( panel ) }>Save</button>
+        <button onClick={ () => onSave( panel ) }>{ $t.save[ panel.lang ] }</button>
       </div>
-      {/* <strong>{ $t.parsed[ panel.lang ] }</strong> */}
+      <strong>{ $t.parsed[ panel.lang ] }:</strong>
       <div className="parsedBox" >
         {
           parse( panel.parsedText )
@@ -43,7 +44,7 @@ const StyledPanelRoot = styled.div`
   width: 50%;
   height: 100%;
   padding: 20px;
-  font-size: 16px;
+  font-size: 13px;
 
   h1 {
     font-size: 20px;
@@ -64,9 +65,9 @@ const StyledPanelRoot = styled.div`
     margin-top: 20px;
     padding: 8px 8px 36px 8px;
     width: 100%;
-    height: 200px;
-    max-height: 200px;
-    font-size: 16px;
+    height: 300px;
+    max-height: 300px;
+    font-size: 13px;
     border-radius: 5px;
     overflow: auto;
   }
@@ -88,7 +89,6 @@ const StyledPanelRoot = styled.div`
     box-sizing: border-box;
     width: 100%;
     height: 100px;
-    margin-top: 100px;
     padding: 6px;
     white-space: pre-wrap;
     color: #ddd;

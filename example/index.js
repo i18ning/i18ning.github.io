@@ -1,7 +1,10 @@
 const translate = async ( text, from, to ) => {
   const sourceText = text.replace(/ /g, '+')
   const getBingData = items => items[ 0 ].TranslatedText
-  const result = await fetch( `http://api.microsofttranslator.com/v2/ajax.svc/TranslateArray?appId=%22TqOrM_WFlaIA2buMr3Omi1ZLbFtmfyHmEIxxPAABFSMc*%22&texts=[%22+${sourceText}+%22]&from=%22${from}%22&to=%22${to}%22&oncomplete=getBingData` ).then( response => response.text() )
+  const appId = `TcU5ktttV7N7Om-OYNLZYKKWsyZ27l4Bfp0U4FKCmx_A`
+  const result = await fetch( 
+    `http://api.microsofttranslator.com/v2/ajax.svc/TranslateArray?appId=%22${appId}*%22&texts=[%22+${sourceText}+%22]&from=%22${from}%22&to=%22${to}%22&oncomplete=getBingData` 
+    ).then( response => response.text() )
   const data = eval( result )
   return data
 }
@@ -16,8 +19,15 @@ class App extends React.Component {
     panels: [
       {
         lang: 'zh-CN',
-        text: `<>苹果<><>Apple<>
-        test`,
+        text: `## <>如何翻译？<>
+1. <>将要翻译的内容置入标签<>"\\<>\\<>"<><>
+2. <>点击保存按钮<>`,
+
+// ## \<1></1>是什么？
+// <>用来记录翻译内容位置的地方，该标签里的内容不会同步<>
+
+// ## 如何同步？
+// <>两种标签<>(\\<><>, \\<1></1>)<>以外的文本会同步<>
         parsedText: '',
       },
       {
