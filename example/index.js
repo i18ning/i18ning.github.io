@@ -3,7 +3,7 @@ const translate = async ( text, from, to ) => {
   const getBingData = items => items[ 0 ].TranslatedText
   const appId = `TcU5ktttV7N7Om-OYNLZYKKWsyZ27l4Bfp0U4FKCmx_A`
   const result = await fetch( 
-    `http://api.microsofttranslator.com/v2/ajax.svc/TranslateArray?appId=%22${appId}*%22&texts=[%22+${sourceText}+%22]&from=%22${from}%22&to=%22${to}%22&oncomplete=getBingData` 
+    `https://api.microsofttranslator.com/v2/ajax.svc/TranslateArray?appId=%22${appId}*%22&texts=[%22+${sourceText}+%22]&from=%22${from}%22&to=%22${to}%22&oncomplete=getBingData` 
     ).then( response => response.text() )
   const data = eval( result )
   return data
