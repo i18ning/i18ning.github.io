@@ -6,20 +6,40 @@ const translate = async ( text, from, to ) => {
   return data
 }
 
+const parse = text => {
+  const model = new TextModel.default( text )
+  return model.convertedText
+}
+
 class App extends React.Component {
   state = {
     panels: [
       {
         lang: 'zh-CN',
-        text: '<>苹果<>'
+        text: `<>苹果<><>Apple<>
+        test`,
+        parsedText: '',
       },
       {
         lang: 'en',
-        text: ''
+        text: '',
+        parsedText: '',
       },
     ]
   }
 
+  handlePanelLangChange = ( panel, lang ) => {
+    this.setState( prevState => ({
+      ...prevState,
+      panels: prevState.panels.map( v => {
+        if ( v === panel ) {
+          return { ...v, lang }
+        }
+        return v
+      } )
+    }) )
+  }
+  
   handlePanelTextChange = ( panel, value ) => {
     this.setState( prevState => ({
       ...prevState,
@@ -38,14 +58,13 @@ class App extends React.Component {
     let newPanels = []
     for ( const current of prevState.panels ) {
       if ( current === panel ) {
-        newPanels.push( { ...current, text: referringTextModel.text } )
+        newPanels.push( { ...current, text: referringTextModel.text, parsedText: parse( referringTextModel.text ) } )
       }
       if ( current !== panel ) {
         const currentTextModel = new TextModel.default( current.text, { isRoot : true, enableTranslation: true } )
         await currentTextModel.updateByReferring( referringTextModel, text => translate( text, panel.lang, current.lang ) )
         await currentTextModel.updateYaml( referringTextModel )
-        console.log( currentTextModel.text )
-        newPanels.push( { ...current, text: currentTextModel.text } )
+        newPanels.push( { ...current, text: currentTextModel.text, parsedText: parse( currentTextModel.text ) } )
       }
     }
 
@@ -62,32 +81,24 @@ class App extends React.Component {
   }
 
   render() {
-    return <div>
+    return <StyledAppRoot>
       {
         this.state.panels.map( ( panel, index ) => <Panel 
           panel={ panel } 
+          onLangChange={ this.handlePanelLangChange } 
           onTextChange={ this.handlePanelTextChange } 
           onSave={ this.handlePanelSave } 
           key={ index }
         /> )
       }
-    </div>
+    </StyledAppRoot>
   }
 }
 
-class Panel extends React.Component {
-  render() {
-    const { panel, onTextChange, onSave} = this.props
-    return <div>
-      <h1>{ panel.lang }</h1>
-      <textarea 
-        onChange={ e => onTextChange( panel, e.target.value ) } 
-        value={ panel.text }
-      />
-      <button onClick={ () => onSave( panel ) }>Save</button>
-    </div>
-  }
-}
+const StyledAppRoot = styled.div`
+  display: flex;
+  height: 100%;
+`
 
 ReactDOM.render(
   <App/>,
